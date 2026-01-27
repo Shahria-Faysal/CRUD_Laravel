@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -19,6 +20,19 @@ class UserController extends Controller
     }
     public function addUser(Request $req)
     {
+        $validator = Validator::make($req->all(), [
+            'username' => 'required|string|min:3|max:50',
+            'useremail' => 'required|email|unique:userss,email',
+            'userage' => 'required|integer|min:1|max:120',
+            'usercity' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $user = DB::table('userss')
             ->insert([
                 'name' => $req->username,
@@ -28,12 +42,12 @@ class UserController extends Controller
             ]);
 
 
-            // ->insert([
-            //     'name' => 'Ram kumar',
-            //     'email' => 'ram@gmail.com',
-            //     'age' => 19,
-            //     'city' => 'delhi'
-            // ]);
+        // ->insert([
+        //     'name' => 'Ram kumar',
+        //     'email' => 'ram@gmail.com',
+        //     'age' => 19,
+        //     'city' => 'delhi'
+        // ]);
         // ->upsert([
         //   'name'=>'Ram kumar',
         //   'email'=>'ram@gmail.com',
@@ -51,13 +65,14 @@ class UserController extends Controller
         }
     }
 
-    public function updatePage(string $id){
+    public function updatePage(string $id)
+    {
         $user = DB::table('userss')->find($id);
         return view('updateuser', ['data' => $user]);
     }
 
 
-    public function updateUser( Request $req, $id)
+    public function updateUser(Request $req, $id)
     {
         $user = DB::table('userss')
             ->where('id', $id)
@@ -71,10 +86,10 @@ class UserController extends Controller
             // ]);
 
             ->update([
-              'name'=> $req->username,
-              'email'=> $req->useremail,
-              'age'=> $req->userage,
-              'city'=> $req->usercity
+                'name' => $req->username,
+                'email' => $req->useremail,
+                'age' => $req->userage,
+                'city' => $req->usercity
             ]);
 
         if ($user) {
