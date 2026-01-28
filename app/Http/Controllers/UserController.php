@@ -32,6 +32,7 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        
 
         $user = DB::table('userss')
             ->insert([
