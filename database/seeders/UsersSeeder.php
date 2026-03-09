@@ -25,5 +25,7 @@ class UsersSeeder extends Seeder
             'city' => $user->city,
           ]);
         });
+
+
     }
 }
