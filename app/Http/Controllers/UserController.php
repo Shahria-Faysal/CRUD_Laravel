@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function showUser()
     {
-        $users = DB::table('userss')->get();
+        $users = DB::table('userss')->paginate(25);
         return view('allusers', ['data' => $users]);
     }
     public function singleUser(string $id)

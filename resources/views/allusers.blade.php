@@ -41,6 +41,7 @@
                         </h3>
                     @endforeach
                 </table>
+                {{ $data->links() }}
             </div>
         </div>
     </div>
